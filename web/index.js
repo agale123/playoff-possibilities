@@ -222,7 +222,8 @@ function calculateTable(matches) {
     }
 
     if (tie) {
-      row[0] = prev[0];
+      row[0] = prev[0] + "*";
+      result[ind - 2][0] += "*";
     } else {
       row[0] = ind;
     }
@@ -235,8 +236,12 @@ function calculateTable(matches) {
 }
 
 function renderTable(table) {
+  const tieWarning = document.getElementById("tie");
+  tieWarning.style.visibility = "hidden";
+
   const tbody = document.getElementsByTagName("tbody").item(0);
   tbody.innerHTML = "";
+
   for (const row of table) {
     const tr = document.createElement("tr");
     let i = 0;
@@ -245,6 +250,9 @@ function renderTable(table) {
       td.innerHTML = col;
       if (i == 1) {
         td.classList.add("big-col");
+      }
+      if (`${col}`.includes("*")) {
+        tieWarning.style.visibility = "visible";
       }
       tr.appendChild(td);
       i++;
